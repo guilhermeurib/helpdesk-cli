@@ -10,9 +10,13 @@ void desenhar_menu (Rectangle botao, Color corbotao) {
     DrawText("ABRIR CHAMADO", 35, 130, 20, BLACK);
 }
 
-void desenhar_abrir_chamado (Rectangle botao, Color corbotao) {
+void desenhar_abrir_chamado (Rectangle botao, Rectangle CampoUsuario, Color corbotao, Color Cor_campo) {
     
     DrawText("ABRIR CHAMADO", 30, 30, 30, DARKGRAY);
+
+    DrawText("Usuário: ", 30, 130, 20, BLACK);
+    DrawRectangleRec(CampoUsuario, Cor_campo);
+    DrawText("[________________________]", 30, 150, 20, BLACK);
 
     DrawRectangleRec(botao, corbotao);
 
@@ -29,22 +33,29 @@ bool botao_clicado (Rectangle botao, Vector2 mouse) {
 }
 
 Color cor_do_botao (Rectangle botao, Vector2 mouse) {
-    Color corbotao;
     if (CheckCollisionPointRec(mouse, botao)) {
-        corbotao = GRAY;
-        return corbotao;
+        return GRAY;
     } else {
         return LIGHTGRAY;
     }
 }
 
+
+
 int main (void) {
+    // CAMPOS OU 'BOTÕES' 
     Rectangle botao = {20, 120, 220, 40}; // Coordenada do botão
 
+    Rectangle CampoUsuario = {30, 150, 300, 20};
+    Color Cor_campo = LIGHTGRAY;
 
-    InitWindow (800, 450, "Service Desk");
 
-    int tela = 0;
+    InitWindow (800, 450, "Service Desk"); // ABRE JANELA
+
+    int tela = 0; // 'TELA/JANELA' inicial
+
+
+    bool CampoUsuario_clicado = false;//
 
     while (!WindowShouldClose()) {
 
@@ -71,8 +82,21 @@ int main (void) {
                 tela = 0;
             }
 
-            desenhar_abrir_chamado(botao, corbotao);
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                if (CheckCollisionPointRec(mouse, CampoUsuario)){
+                    CampoUsuario_clicado = true;
+                } else {
+                CampoUsuario_clicado = false;
+                }
+            }
 
+            if (CampoUsuario_clicado) {
+                Cor_campo = GRAY;
+            } else {
+                Cor_campo = LIGHTGRAY;
+            }
+            
+            desenhar_abrir_chamado(botao, CampoUsuario, corbotao, Cor_campo);
         }
 
 
