@@ -10,13 +10,15 @@ void desenhar_menu (Rectangle botao, Color corbotao) {
     DrawText("ABRIR CHAMADO", 35, 130, 20, BLACK);
 }
 
-void desenhar_abrir_chamado (Rectangle botao, Rectangle CampoUsuario, Color corbotao, Color Cor_campo) {
+void desenhar_abrir_chamado (Rectangle botao, Rectangle CampoUsuario, Color corbotao, Color Cor_campo, char usuario[]) {
     
     DrawText("ABRIR CHAMADO", 30, 30, 30, DARKGRAY);
 
     DrawText("Usuário: ", 30, 130, 20, BLACK);
     DrawRectangleRec(CampoUsuario, Cor_campo);
     DrawText("[________________________]", 30, 150, 20, BLACK);
+
+    DrawText (usuario, 30, 150, 20, BLACK );
 
     DrawRectangleRec(botao, corbotao);
 
@@ -48,6 +50,10 @@ int main (void) {
 
     Rectangle CampoUsuario = {30, 150, 300, 20};
     Color Cor_campo = LIGHTGRAY;
+
+    // VARIÁVEIS DE TEXTO
+    char usuario[50] = "";
+    int tamanho_digitado = 0; //quantidade de caracteres digitados
 
 
     InitWindow (800, 450, "Service Desk"); // ABRE JANELA
@@ -95,8 +101,19 @@ int main (void) {
             } else {
                 Cor_campo = LIGHTGRAY;
             }
-            
-            desenhar_abrir_chamado(botao, CampoUsuario, corbotao, Cor_campo);
+
+            if (CampoUsuario_clicado) {
+                int caractere = GetCharPressed();
+                if (caractere > 0) {
+                    if (tamanho_digitado < sizeof(usuario) - 1) {
+                        usuario[tamanho_digitado] = caractere;
+                        tamanho_digitado++;
+                        usuario[tamanho_digitado] = '\0';
+                        printf ("Usuario: %s\n", usuario);
+                    }
+                }
+            }
+            desenhar_abrir_chamado(botao, CampoUsuario, corbotao, Cor_campo, usuario);
         }
 
 
